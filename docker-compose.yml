@@ -1,0 +1,29 @@
+services:
+  lab3:
+    image: ${DOCKER_REGISTRY-}lab3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+        - nw
+    depends_on:
+        - db
+  db: 
+    image: postgres:latest
+    restart: always
+    environment: 
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    ports:
+        - 54320:5432
+    volumes:
+        - db:/var/lib/postgresql/data
+    networks: 
+        - nw
+volumes:
+  db:
+    driver: local
+networks:
+  nw: 
+    driver: bridge
